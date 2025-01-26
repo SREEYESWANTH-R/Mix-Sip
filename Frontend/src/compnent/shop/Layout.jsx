@@ -3,13 +3,32 @@ import logo from '../../assets/logo.png'
 import searchIcon from '../../assets/search_icon.png'
 import cartIcon from '../../assets/cart_icon.png'
 import profileIcon from '../../assets/profile_icon.png'
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 
 
 function Layout(){
 
   const [totalCartCount, setTotalCartCount] = useState(0);
+
+
+  useEffect(()=>{
+    const getCartCount = async() =>{
+      try {
+        const response = await axios.get("http://localhost:5000/api/cart/cart-count",{
+          withCredentials:true
+        })
+        if(response){
+          setTotalCartCount(response.data.totalItems);
+          console.log(response.data.totalItems)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getCartCount();
+  },[])
 
   return (
     <div className="flex flex-col gap-4 ">
@@ -40,7 +59,7 @@ function Layout(){
           <div className="flex items-center gap-8">
             <img className="w-6" src={searchIcon}  alt=""/>
             <div className="relative ">
-            <p className={`absolute w-5 h-5 text-center left-4 bottom-3 font-semibold rounded-full bg-pink-400 text-black`}>1</p>
+            <p className={`absolute w-5 h-5 text-center left-4 bottom-3 font-semibold rounded-full bg-pink-400 text-black`}>{totalCartCount}</p>
             <img className="w-6" src={cartIcon} alt=""/>
             </div>
             
