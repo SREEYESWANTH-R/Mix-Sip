@@ -1,31 +1,37 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { fetchProducts } from "../../store/product-slice";
+import { PacmanLoader } from "react-spinners";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector(state => state.product);
+
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [sortType, setSortType] = useState("relavent");
-  const [products, setProducts] = useState([]);
-  // const [cartUpdated, setCartUpdated] = useState(false);
-  // const [totalCartCount, setTotalCartCount] = useState(0);
 
   //Fetch Product and display
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/product/get-product"
-        );
-        setProducts(response.data.products);
-        setFilterProducts(response.data.products);
-      } catch (error) {
-        console.log(error);
+  useEffect(
+    () => {
+      dispatch(fetchProducts());
+    },
+    [dispatch]
+  );
+
+  useEffect(
+    () => {
+      if (products && products.length > 0) {
+        setFilterProducts(products);
+      } else {
+        setFilterProducts([]);
       }
-    };
-    fetchProducts();
-  }, []);
+    },
+    [products]
+  );
 
   const toogleCategory = e => {
     if (category.includes(e.target.value)) {
@@ -76,26 +82,20 @@ const Home = () => {
     [sortType]
   );
 
-  const handleCart = async (id) => {
-   
+  const handleCart = async id => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/cart/${id}`,{},{withCredentials:true}
+        `http://localhost:5000/api/cart/${id}`,
+        {},
+        { withCredentials: true }
       );
       if (response.status) {
         toast.success(response.data.message);
-        setCartUpdated(prev => !prev);
       }
     } catch (error) {
-      
       console.log(error);
     }
   };
-
-
-  // useEffect(()=>{
-  //   handleCart();
-  // },[cartUpdated])
 
   return (
     <div className="flex px-10 gap-4">
@@ -143,41 +143,49 @@ const Home = () => {
         </div>
       </div>
       <div className="flex-1 border px-5 py-5 h-full">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filterProducts.map((product, index) =>
-            <div
-              key={index}
-              className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
-            >
-              <Link
-                className="text-gray-700 cursor-pointer"
-                to={`/shop/product/${product._id}`}
-              >
-                {product.img &&
-                  <img
-                    src={  product.img}
-                    alt={product.name}
-                    className="w-full h-48 object-cover rounded-md mb-4"
-                  />}
-                <h2 className="text-lg font-semibold">
-                  {product.name}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  {product.description}
-                </p>
-                <p className="text-sm text-gray-500 font-semibold">
-                  {product.quantity} | ₹{product.price}
-                </p>
-              </Link>
-              <button
-                onClick={() => handleCart(product._id)}
-                className="text-center bg-pink-200 rounded-md mt-2 px-2 py-2 border-2  border-pink-500 font-bold"
-              >
-                Add To Cart
-              </button>
+        {loading
+          ? <div className="w-full flex items-center justify-center min-h-screen">
+              <PacmanLoader color="#ff44e1" />
             </div>
-          )}
-        </div>
+          : error
+            ? <p className="text-red-500">
+                Failed to load products: {error}
+              </p>
+            : <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {filterProducts.map((product, index) =>
+                  <div
+                    key={index}
+                    className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
+                  >
+                    <Link
+                      className="text-gray-700 cursor-pointer"
+                      to={`/shop/product/${product._id}`}
+                    >
+                      {product.img &&
+                        <img
+                          src={product.img}
+                          alt={product.name}
+                          className="w-full h-48 object-cover rounded-md mb-4"
+                        />}
+                      <h2 className="text-lg font-semibold">
+                        {product.name}
+                      </h2>
+                      <p className="text-sm text-gray-600">
+                        {product.description}
+                      </p>
+                      <p className="text-sm text-gray-500 font-semibold">
+                        {product.quantity} | ₹{product.price}
+                      </p>
+                    </Link>
+                    <button
+                      onClick={() => handleCart(product._id)}
+                      className="text-center bg-pink-200 rounded-md mt-2 px-2 py-2 border-2 border-pink-500 font-bold"
+                    >
+                      Add To Cart
+                    </button>
+                  </div>
+                )}
+              </div>}
       </div>
       <ToastContainer position="bottom-right" duration={2000} />
     </div>
