@@ -1,5 +1,6 @@
 import express from "express"
 import Product from "../model/ProductModel.js";
+import { authMiddleware } from "../controller/AuthController.js";
 
 
 const router = express.Router();
@@ -36,6 +37,22 @@ router.post("/add-product",async(req,res)=>{
         res.status(500).json("Server Error")
     }
 })
+
+router.get("/:id",async(req,res)=>{
+    try {
+        const {id} = req.params;
+        const iniProduct = await Product.findById(id);
+        
+
+        res.status(200).json({iniProduct});
+
+    } catch (error) {
+        res.status(500).json("Server Error");
+        console.log(error);
+    }
+})  
+
+
 
 
 export default router;
