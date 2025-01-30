@@ -24,6 +24,7 @@ const UserSchema  = new mongoose.Schema({
         {
             productId: String,
             name:String,
+            img:Array,
             price:Number,
             quantity:Number
         }
