@@ -1,6 +1,7 @@
 import express from "express"
 import Product from "../model/ProductModel.js";
 import { authMiddleware } from "../controller/AuthController.js";
+import User from "../model/User.js";
 
 
 const router = express.Router();
@@ -38,6 +39,9 @@ router.post("/add-product",async(req,res)=>{
     }
 })
 
+
+
+
 router.get("/:id",async(req,res)=>{
     try {
         const {id} = req.params;
@@ -51,6 +55,18 @@ router.get("/:id",async(req,res)=>{
         console.log(error);
     }
 })  
+
+router.get("/:category",async(req,res)=>{
+    try {
+        const {category} = req.params;
+        const catProduct = await Product.find({category});
+        res.status(200).json({catProduct})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("Server Error")
+    }
+})
+
 
 
 
