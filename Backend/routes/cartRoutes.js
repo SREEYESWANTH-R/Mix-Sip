@@ -30,6 +30,7 @@ router.post("/:id",authMiddleware,async(req,res)=>{
             user.cart.push({
                 productId:id,
                 name: product.name,
+                img:product.img,
                 price: product.price,
                 quantity: 1,
             })
@@ -61,6 +62,50 @@ router.get("/cart-count",authMiddleware,async(req,res)=>{
 
     } catch (error) {
         console.log(error)
+        res.status(500).json("Server Error");
+    }
+})
+
+
+router.get("/cart-items",authMiddleware,async(req,res)=>{
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId);
+
+        if(!user){
+            return res.status(404).json("User Not Found");
+        }
+        
+        const cartitems = user.cart;
+
+        res.status(200).json({cartitems});
+    
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("Server error")
+    }
+})
+
+router.delete("/delete-cart/:id",authMiddleware,async(req,res)=>{
+    try {
+       const {id} = req.params
+       const userId = req.user.id;
+
+       const user = await User.findByIdAndUpdate(
+        userId,
+        {$pull : {cart : { _id:id }}},
+        {new:true}
+       )
+
+       if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+      }
+  
+      res.status(200).json({ success:true, message:"Removed from cart"});
+
+    } catch (error) {
+        console.log(error.message)
         res.status(500).json("Server Error");
     }
 })
