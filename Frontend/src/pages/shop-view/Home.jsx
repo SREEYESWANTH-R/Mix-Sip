@@ -5,10 +5,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchProducts } from "../../store/product-slice";
 import { PacmanLoader } from "react-spinners";
+import { getCartCount } from "../../store/cart-slice";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector(state => state.product);
+  
 
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -91,6 +93,8 @@ const Home = () => {
       );
       if (response.status) {
         toast.success(response.data.message);
+        dispatch(getCartCount())
+
       }
     } catch (error) {
       console.log(error);
@@ -144,7 +148,7 @@ const Home = () => {
       </div>
       <div className="flex-1 border px-5 py-5 h-full">
         {loading
-          ? <div className="w-full flex items-center justify-center min-h-screen">
+          ? <div className="w-full flex items-center justify-center h-full">
               <PacmanLoader color="#ff44e1" />
             </div>
           : error
