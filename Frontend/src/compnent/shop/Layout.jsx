@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import searchIcon from "../../assets/search_icon.png";
 import cartIcon from "../../assets/cart_icon.png";
@@ -7,10 +7,12 @@ import { useEffect } from "react";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartCount } from "../../store/cart-slice";
+import axios from "axios";
 
 function Layout() {
   const { cartCount } = useSelector(state => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(
     () => {
@@ -18,6 +20,21 @@ function Layout() {
     },
     [dispatch, cartCount]
   );
+
+  // Logout function
+  const handleLogout = async() =>{
+      try {
+        const response = await axios.post("http://localhost:5000/api/auth/logout",{
+          withCredentials:true
+        });
+        if(response){
+          return navigate("/auth/login");
+        }
+        console.log(response.data.message)
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
   return (
     <div className="flex flex-col gap-4 min-h-screen">
@@ -85,9 +102,9 @@ function Layout() {
               <Link to="/orders">
                 <li className="p-2 hover:bg-gray-100 cursor-pointer">Orders</li>
               </Link>
-              <Link to="/logout">
-                <li className="p-2 hover:bg-gray-100 cursor-pointer">Logout</li>
-              </Link>
+              
+                <li onClick={()=>{handleLogout()}} className="p-2 hover:bg-gray-100 cursor-pointer">Logout</li>
+              
             </ul>
           </div>
         </div>
