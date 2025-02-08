@@ -1,0 +1,16 @@
+{
+    "version" : 1,
+    "name" : "MixAndSip",
+    "builds" : [
+        {
+            "src" : "./server.js",
+            "use" : "@vercel/node"
+        }
+    ],
+    "routes" : [
+        {
+            "src" : "/(.*)",
+            "dest" : "/"
+        }
+    ]
+}
