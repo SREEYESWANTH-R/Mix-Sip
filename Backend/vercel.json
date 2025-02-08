@@ -1,6 +1,6 @@
 {
-    "version" : 1,
-    "name" : "MixAndSip",
+    "version" : 2,
+    "name" : "mix-sip",
     "builds" : [
         {
             "src" : "./server.js",
