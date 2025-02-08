@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { fetchProducts } from "../../store/product-slice";
 import { PacmanLoader } from "react-spinners";
 import { getCartCount } from "../../store/cart-slice";
+import { baseURL } from "../../compnent/common/Common";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const Home = () => {
   const handleCart = async id => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/cart/${id}`,
+        `${baseURL}/api/cart/${id}`,
         {},
         { withCredentials: true }
       );

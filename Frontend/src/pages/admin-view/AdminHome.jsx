@@ -7,6 +7,7 @@ import { Edit, Trash2 } from "lucide-react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, Modal, TextField } from "@mui/material";
+import { baseURL } from "../../compnent/common/Common";
 
 const AdminHome = () => {
   const { products, loading, error } = useSelector(state => state.product);
@@ -44,7 +45,7 @@ const AdminHome = () => {
   const handleProductDelete = async id => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/product/${id}`,
+        `${baseURL}/api/product/${id}`,
         {
           withCredentials: true
         }
@@ -77,7 +78,7 @@ const AdminHome = () => {
 
   const handleSaveDetails = async()=>{
     try {
-      const response = axios.put(`http://localhost:5000/api/product/edit/${productId}`,
+      const response = axios.put(`${baseURL}/api/product/edit/${productId}`,
         formData,
         {withCredentials:true}
       )

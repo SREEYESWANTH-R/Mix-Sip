@@ -14,8 +14,10 @@ import ShopLayout from "./compnent/shop/Layout"
 // import { checkAuth } from "./store/auth-slice"
 import AdminAddProduct from "./pages/admin-view/AdminAddProduct"
 
-function App() {
 
+
+function App() {
+ 
   // const {isAuthenticated,user}  = useSelector(state => state.auth);
   // const dispatch = useDispatch();
 
@@ -26,6 +28,7 @@ function App() {
   return (
     <div className='flex flex-col overflow-hidden bg-white '>
         <Routes>
+          {/* <Route path="/" element={<Home/>}/> */}
           <Route path="/auth" element={<AuthLayout/>}>
               <Route path="register" element={<Register/>}/>
               <Route path="login" element={<Login/>}/>

@@ -8,6 +8,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartCount } from "../../store/cart-slice";
 import axios from "axios";
+import {baseURL} from "../common/Common.js"
 
 function Layout() {
   const { cartCount } = useSelector(state => state.cart);
@@ -24,7 +25,7 @@ function Layout() {
   // Logout function
   const handleLogout = async() =>{
       try {
-        const response = await axios.post("http://localhost:5000/api/auth/logout",{
+        const response = await axios.post(`${baseURL}/api/auth/logout`,{
           withCredentials:true
         });
         if(response){

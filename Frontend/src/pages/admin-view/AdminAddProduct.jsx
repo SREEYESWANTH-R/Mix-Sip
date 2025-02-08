@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase/firebaseConfig";
 import { Plus } from "lucide-react";
+import { baseURL } from "../../compnent/common/Common";
 
 const AdminAddProduct = () => {
   const [addProduct, setAddProduct] = useState({
@@ -61,7 +62,7 @@ const AdminAddProduct = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/product/add-product",
+        `${baseURL}/api/product/add-product`,
         addProduct
       );
       if (response) {

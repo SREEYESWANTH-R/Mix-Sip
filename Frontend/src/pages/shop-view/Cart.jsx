@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { PacmanLoader } from "react-spinners";
 import { toast, ToastContainer } from "react-toastify";
+import { baseURL } from "../../compnent/common/Common";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -10,7 +11,7 @@ const Cart = () => {
   const getCartItems = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/cart/cart-items",
+        `${baseURL}/api/cart/cart-items`,
         {
           withCredentials: true
         }
@@ -32,7 +33,7 @@ const Cart = () => {
   const handleDelete = async id => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/cart/delete-cart/${id}`,
+        `${baseURL}/api/cart/delete-cart/${id}`,
         {
           withCredentials: true
         }

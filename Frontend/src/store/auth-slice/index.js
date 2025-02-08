@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from 'axios'
+import { baseURL } from "../../compnent/common/Common"
 
 const initialState = {
     isAuthenticated:false,
@@ -10,7 +11,7 @@ const initialState = {
 export const registerUser = createAsyncThunk(
     'auth/register',
     async(formData)=>{
-        const response = await axios.post("http://localhost:5000/api/auth/register",
+        const response = await axios.post(`${baseURL}/api/auth/register`,
         formData,
         {
             withCredentials:true
@@ -23,7 +24,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
     'auth/login',
     async(formData)=>{
-        const response = await axios.post("http://localhost:5000/api/auth/login",
+        const response = await axios.post(`${baseURL}/api/auth/login`,
         formData,{
             withCredentials:true
         })

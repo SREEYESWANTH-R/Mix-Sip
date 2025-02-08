@@ -1,5 +1,6 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+import { baseURL } from '../../compnent/common/Common'
 
 const initialState = {
     products:[],
@@ -13,7 +14,7 @@ const initialState = {
 export const fetchProducts = createAsyncThunk(
     'product/get-product',
     async()=>{
-        const response = await axios.get('http://localhost:5000/api/product/get-product')
+        const response = await axios.get(`${baseURL}/api/product/get-product`)
         return response.data.products
     }
 )
@@ -21,7 +22,7 @@ export const fetchProducts = createAsyncThunk(
 export const fetchInidividualProd = createAsyncThunk(
     'product/:id',
     async(id)=>{
-        const response = await axios.get(`http://localhost:5000/api/product/${id}`)
+        const response = await axios.get(`${baseURL}/api/product/${id}`)
         return response.data.iniProduct
     }
 )
@@ -29,7 +30,7 @@ export const fetchInidividualProd = createAsyncThunk(
 export const relatedProducts = createAsyncThunk(
     'product/:category',
     async(category)=>{
-        const response = await axios.get(`http://localhost:5000/api/product/${category}`)
+        const response = await axios.get(`${baseURL}/api/product/${category}`)
         return response.data.catProduct
     }
 )
