@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import AuthLayout from "./compnent/auth/layout";
+import AuthLayout from "./compnent/auth/Layout";
 import Register from "./pages/auth-page/Register";
 import Login from "./pages/auth-page/Login";
 import CheckAuth from "./compnent/common/CheckAuth";
