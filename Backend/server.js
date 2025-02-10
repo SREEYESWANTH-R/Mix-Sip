@@ -16,6 +16,11 @@ app.use(cors(
     credentials: true }
 ));
 app.use(cookieParser());
+
+app.get("/", (req, res) => {
+    res.send("Backend is running!");
+});
+
 app.use('/api/auth/',authRoute);
 app.use('/api/cart/',cartRoute);
 app.use("/api/product/",productRoute);
