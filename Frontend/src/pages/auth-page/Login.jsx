@@ -28,7 +28,7 @@ function Login(){
       if(data?.payload?.success){
         if(data?.payload?.user.role !== 'user'){
           toast.success(data?.payload?.message);
-          navigate("/shop/home");
+          navigate("/");
         }else{
           navigate("/admin/dashboard");
         }
