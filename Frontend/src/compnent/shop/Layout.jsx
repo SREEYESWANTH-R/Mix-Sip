@@ -15,6 +15,8 @@ function Layout() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+  const { isAuthenticated } = useSelector(state => state.auth);
+
   useEffect(
     () => {
       dispatch(getCartCount());
@@ -74,11 +76,11 @@ function Layout() {
         <div className="flex items-center gap-8">
           <img className="w-6" src={searchIcon} alt="" />
           <div className="relative">
-            {cartCount
-              ? <p className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center text-xs font-semibold rounded-full bg-pink-400 text-black">
+            {isAuthenticated && cartCount > 0 &&
+              <p className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center text-xs font-semibold rounded-full bg-pink-400 text-black">
                   {cartCount}
                 </p>
-              : null}
+              }
             <Link to={"/shop/cart"}>
               <img className="w-6" src={cartIcon} alt="Cart" />
             </Link>
@@ -89,7 +91,7 @@ function Layout() {
               src={profileIcon}
               alt="Profile"
             />
-            <ul className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300">
+            <ul className="absolute right-0 mt-3 top-1 w-40 bg-white shadow-lg rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300">
               <Link to="/profile">
                 <li className="p-2 hover:bg-gray-100 cursor-pointer">
                   Profile
@@ -104,7 +106,7 @@ function Layout() {
                 <li className="p-2 hover:bg-gray-100 cursor-pointer">Orders</li>
               </Link>
               
-                <li onClick={()=>{handleLogout()}} className="p-2 hover:bg-gray-100 cursor-pointer">Logout</li>
+              <li onClick={()=>{handleLogout()}} className="p-2 hover:bg-gray-100 cursor-pointer">Logout</li>
               
             </ul>
           </div>
