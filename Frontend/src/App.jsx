@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AuthLayout from "./compnent/auth/Layout";
 import Register from "./pages/auth-page/Register";
 import Login from "./pages/auth-page/Login";
@@ -8,28 +8,37 @@ import Home from "./pages/shop-view/Home";
 import Product from "./pages/shop-view/Product";
 import Cart from "./pages/shop-view/Cart";
 import Admin from "./pages/admin-view/Admin";
-// import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import ShopLayout from "./compnent/shop/Layout";
-// import { useEffect } from "react"
-// import { checkAuth } from "./store/auth-slice"
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
 import AdminAddProduct from "./pages/admin-view/AdminAddProduct";
+import Address from "./pages/shop-view/Address";
+import Orders from "./pages/shop-view/Orders";
 
 function App() {
-  // const {isAuthenticated,user}  = useSelector(state => state.auth);
-  // const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
-  // useEffect(()=>{
-  //   dispatch(checkAuth());
-  // },[dispatch])
+  useEffect(
+    () => {
+      dispatch(checkAuth());
+    },
+    [dispatch]
+  );
 
   return (
     <div className="flex flex-col overflow-hidden bg-white ">
       <Routes>
         <Route path="/" element={<ShopLayout />}>
-          
           <Route index element={<Home />} />
           <Route path="/shop/product/:id" element={<Product />} />
-          <Route path="/shop/cart" element={<Cart />} />
+          <Route
+            path="/shop/cart"
+            element={isAuthenticated ? <Cart /> : <Navigate to="/auth/login" />}
+          />
+          <Route path="/address" element=<Address /> />
+          <Route path="/orders" element= { isAuthenticated ? <Orders /> : <Navigate to='/auth/login' /> } />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="register" element={<Register />} />
